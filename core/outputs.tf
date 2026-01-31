@@ -5,10 +5,10 @@ output "k3s_server_ip" {
 
 output "k3s_public_ip" {
   description = "Public IP to SSH into Core"
-  value       = aws_instance.k3s_core.public_ip
+  value       = aws_eip.k3s_core_ip.public_ip
 }
 
 output "k3s_token_cmd" {
   description = "Command to get the node token (run via SSH)"
-  value       = "ssh ubuntu@${aws_instance.k3s_core.public_ip} 'sudo cat /var/lib/rancher/k3s/server/node-token'"
+  value       = "ssh ubuntu@${aws_eip.k3s_core_ip.public_ip} 'sudo cat /var/lib/rancher/k3s/server/node-token'"
 }

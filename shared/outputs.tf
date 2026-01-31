@@ -8,6 +8,11 @@ output "public_subnets" {
   value       = aws_subnet.public[*].id
 }
 
+output "public_subnets_azs" {
+  description = "List of Availability Zones for public subnets"
+  value       = aws_subnet.public[*].availability_zone
+}
+
 output "private_subnets" {
   description = "List of IDs of private subnets"
   value       = aws_subnet.private[*].id

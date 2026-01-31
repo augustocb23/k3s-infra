@@ -26,7 +26,10 @@ resource "aws_subnet" "public" {
 
   map_public_ip_on_launch = true
 
-  tags = { Name = "k3s-public-${var.env}-${count.index + 1}" }
+  tags = {
+    Name = "k3s-public-${var.env}-${count.index + 1}"
+    Type = "public"
+  }
 }
 
 resource "aws_route_table" "public" {
@@ -56,7 +59,10 @@ resource "aws_subnet" "private" {
   cidr_block        = cidrsubnet(var.vpc_cidr, 4, count.index + length(data.aws_availability_zones.available.names))
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
-  tags = { Name = "k3s-private-${var.env}-${count.index + 1}" }
+  tags = {
+    Name = "k3s-private-${var.env}-${count.index + 1}"
+    Type = "private"
+  }
 }
 
 # Note: The route to 0.0.0.0/0 via NAT Instance will be injected by the 'core' module
