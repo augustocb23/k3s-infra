@@ -41,7 +41,7 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-  count =  length(aws_subnet.public)
+  count = length(aws_subnet.public)
 
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
@@ -53,7 +53,7 @@ resource "aws_subnet" "private" {
   count = length(data.aws_availability_zones.available.names)
 
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 4, count.index + count.length)
+  cidr_block        = cidrsubnet(var.vpc_cidr, 4, count.index + length(data.aws_availability_zones.available.names))
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
   tags = { Name = "k3s-private-${var.env}-${count.index + 1}" }
@@ -67,7 +67,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "private" {
-  count          = length(aws_subnet.private)
+  count = length(aws_subnet.private)
 
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id

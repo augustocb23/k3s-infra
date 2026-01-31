@@ -20,5 +20,5 @@ output "private_route_table_id" {
 
 output "ecr_url" {
   description = "The URL of the ECR repository"
-  value       = aws_ecr_repository.app_repo.repository_url
+  value       = aws_ecr_repository.main.repository_url
 }
