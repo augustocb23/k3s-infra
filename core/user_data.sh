@@ -33,6 +33,9 @@ curl -sfL https://get.k3s.io | K3S_TOKEN="${k3s_token}" sh -s - server \
   --tls-san "$PRIVATE_IP" \
   --tls-san "$PUBLIC_IP"
 
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+kubectl taint nodes k3s-core node-role.kubernetes.io/master=true:NoSchedule
+
 echo "--- K3s installed ---"
 
 # 3. MySQL
