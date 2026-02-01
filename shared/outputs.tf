@@ -23,7 +23,7 @@ output "private_route_table_id" {
   value       = aws_route_table.private.id
 }
 
-output "ecr_url" {
-  description = "The URL of the ECR repository"
-  value       = aws_ecr_repository.main.repository_url
+output "vpc_cidr_block" {
+  description = "CIDR block of the VPC"
+  value       = aws_vpc.main.cidr_block
 }

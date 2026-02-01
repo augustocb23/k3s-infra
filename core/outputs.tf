@@ -8,7 +8,8 @@ output "k3s_public_ip" {
   value       = aws_eip.k3s_core_ip.public_ip
 }
 
-output "k3s_token_cmd" {
-  description = "Command to get the node token (run via SSH)"
-  value       = "ssh ubuntu@${aws_eip.k3s_core_ip.public_ip} 'sudo cat /var/lib/rancher/k3s/server/node-token'"
+output "k3s_token" {
+  description = "Token for new nodes to join the cluster"
+  value       = random_password.k3s_token.result
+  sensitive   = true
 }

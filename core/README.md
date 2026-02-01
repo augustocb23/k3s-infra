@@ -13,7 +13,7 @@ A infraestrutura foi desenhada para operar dentro das restrições e custos redu
 
 Os recursos são definidos via Terraform e agrupados por função.
 
-### Instância Principal ([`instance.tf`](./intance.tf))
+### Instância Principal ([`main.tf`](./main.tf))
 
 Define a máquina virtual central do cluster (`k3s-core`).
 Utiliza a família `t4g.small` (ARM64, 2 vCPU, 2GB RAM), que oferece a melhor relação performance/custo para sustentar o Control Plane e o Banco de Dados simultaneamente.

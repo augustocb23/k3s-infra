@@ -107,13 +107,15 @@ resource "aws_instance" "k3s_core" {
   instance_type = var.instance_type
 
   subnet_id              = data.terraform_remote_state.shared.outputs.public_subnets[0]
+  enable_primary_ipv6    = true
   vpc_security_group_ids = [aws_security_group.core_sg.id]
 
   iam_instance_profile = data.aws_iam_instance_profile.lab_profile.name
   key_name             = "vockey"
 
   user_data = templatefile("${path.module}/user_data.sh", {
-    db_password = random_password.db_root_pass.result
+    db_password = random_password.db_root_pass.result,
+    k3s_token   = random_password.k3s_token.result
   })
   user_data_replace_on_change = true
 
@@ -134,7 +136,7 @@ resource "aws_instance" "k3s_core" {
 resource "aws_eip" "k3s_core_ip" {
   domain   = "vpc"
   instance = aws_instance.k3s_core.id
-  
+
   tags = {
     Name = "k3s-core-ip-${var.env}"
   }

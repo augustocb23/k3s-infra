@@ -1,3 +1,4 @@
+# database root password
 resource "random_password" "db_root_pass" {
   length  = 20
   special = true
@@ -20,4 +21,10 @@ resource "aws_secretsmanager_secret_version" "db_secret_value" {
     host     = aws_instance.k3s_core.private_ip
     port     = 3306
   })
+}
+
+# k3s token
+resource "random_password" "k3s_token" {
+  length  = 32
+  special = false
 }
