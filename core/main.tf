@@ -107,7 +107,6 @@ resource "aws_instance" "k3s_core" {
   instance_type = var.instance_type
 
   subnet_id              = data.terraform_remote_state.shared.outputs.public_subnets[0]
-  enable_primary_ipv6    = true
   vpc_security_group_ids = [aws_security_group.core_sg.id]
 
   iam_instance_profile = data.aws_iam_instance_profile.lab_profile.name
