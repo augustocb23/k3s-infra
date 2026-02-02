@@ -23,6 +23,11 @@ output "private_subnets" {
   value       = aws_subnet.private[*].id
 }
 
+output "public_subnets_cidrs" {
+  description = "List of CIDRs of public subnets"
+  value       = aws_subnet.public[*].cidr_block
+}
+
 output "private_route_table_id" {
   description = "ID of the private route table, used to inject NAT route later"
   value       = aws_route_table.private.id

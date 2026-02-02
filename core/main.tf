@@ -9,15 +9,6 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-# roles
-data "aws_iam_role" "lab_role" {
-  name = "LabRole"
-}
-
-data "aws_iam_instance_profile" "lab_profile" {
-  name = "LabInstanceProfile"
-}
-
 # security group
 resource "aws_security_group" "core_sg" {
   name        = "k3s-core-sg-${var.env}"
@@ -107,9 +98,10 @@ resource "aws_instance" "k3s_core" {
   instance_type = var.instance_type
 
   subnet_id              = data.terraform_remote_state.shared.outputs.public_subnets[0]
+  private_ip             = cidrhost(data.terraform_remote_state.shared.outputs.public_subnets_cidrs[0], 10)
   vpc_security_group_ids = [aws_security_group.core_sg.id]
 
-  iam_instance_profile = data.aws_iam_instance_profile.lab_profile.name
+  iam_instance_profile = "LabInstanceProfile"
   key_name             = "vockey"
 
   user_data = templatefile("${path.module}/user_data.sh", {

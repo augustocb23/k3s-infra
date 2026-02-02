@@ -56,5 +56,6 @@ Este módulo exporta dados críticos via `terraform_remote_state` para serem con
 | `vpc_cidr_block`         | O range de IP da rede principal.          | Security Groups                    |
 | `public_subnets`         | Lista de IDs das subnets públicas.        | Módulo Core                        |
 | `public_subnets_azs`     | Lista de Zonas de Disponibilidade usadas. | Persistência (EBS)                 |
+| `public_subnets_cidrs`   | Lista de CIDRs para cálculos de IP fixo.  | Módulo Core                        |
 | `private_subnets`        | Lista de IDs das subnets privadas.        | Módulo Nodes (ASG)                 |
 | `private_route_table_id` | ID da tabela de rotas privada.            | Módulo Core (para injeção de rota) |

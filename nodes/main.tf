@@ -17,6 +17,9 @@ resource "aws_launch_template" "node_lt" {
 
   vpc_security_group_ids = [aws_security_group.node_sg.id]
 
+  iam_instance_profile {
+    name = "LabInstanceProfile"
+  }
   key_name = "vockey"
 
   user_data = base64encode(templatefile("${path.module}/user_data.sh", {
@@ -42,11 +45,15 @@ resource "aws_autoscaling_group" "node_asg" {
 
   vpc_zone_identifier = data.terraform_remote_state.shared.outputs.private_subnets
 
+  instance_refresh {
+    strategy = "Rolling"
+  }
+
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
         launch_template_id = aws_launch_template.node_lt.id
-        version            = "$Latest"
+        version            = aws_launch_template.node_lt.latest_version
       }
 
       override { instance_type = "t3.small" }
