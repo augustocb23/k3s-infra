@@ -39,8 +39,7 @@ resource "aws_launch_template" "node_lt" {
 # auto scaling group
 resource "aws_autoscaling_group" "node_asg" {
   name             = "k3s-node-asg-${var.env}"
-  desired_capacity = 1
-  max_size         = 3
+  max_size         = 5
   min_size         = 1
 
   vpc_zone_identifier = data.terraform_remote_state.shared.outputs.private_subnets

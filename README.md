@@ -1,6 +1,8 @@
-# K3s Lab usando AWS Academy (Frugal Architecture)
+# K3s Infra (Frugal Architecture)
 
-Este projeto provisiona um cluster Kubernetes (K3s) funcional e resiliente na AWS, projetado especificamente para compatibilidade com o ambiente restrito da AWS Academy e otimização agressiva de custos (arquitetura frugal).
+Este projeto provisiona um cluster Kubernetes (K3s) funcional e resiliente na AWS, projetado com foco em otimização agressiva de custos (arquitetura frugal).
+
+Elaborado para compatibilidade com o ambiente restrito da AWS Academy, mas pode ser facilmente adaptado para uma assinatura tradicional.
 
 ## Visão Geral da Arquitetura
 
@@ -9,6 +11,7 @@ O projeto adota uma arquitetura monolítica a fim de reduzir custos de infraestr
 1. **Control Plane & Database:** O servidor K3s e seu banco de dados de estado rodam na mesma instância. Isso elimina o custo de um banco de dados gerenciado (como RDS), com o trade-off de compartilhar recursos de memória e CPU. Utiliza um volume secundário para garantir a preservação dos dados caso o ambiente precise ser reiniciado.
 2. **NAT Instance:** O Core atua como gateway de saída para as subnets privadas, eliminando a necessidade de um NAT Gateway gerenciado pela AWS (uma economia estimada de ~$33/mês).
 3. **Bastion Host:** Serve como ponto único de entrada SSH seguro para administração dos workers (nodes).
+4. **Auto-scalling**: Possui um script que ajusta o Auto-scalling Group na AWS de acordo a necessidade.
 
 ## Estrutura de Módulos (Terraform)
 
@@ -29,6 +32,8 @@ Configura o K3s em modo Server, aplica Taints para evitar agendamento de cargas 
 
 Essa instância também provisiona um banco de dados MySQL.
 A senha do usuário `root` é gerada e cadastrada no Secrets Manager da AWS.
+
+A instância também possui um script para alterar o Auto Scalling Group de acordo a demanda, aumentando o número de instâncias caso existam pods pendentes e diminuindo se houverem nodes vazios.
 
 ### 3. Camada de Computação ([`nodes`](./nodes/README.md))
 

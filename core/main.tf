@@ -106,7 +106,8 @@ resource "aws_instance" "k3s_core" {
 
   user_data = templatefile("${path.module}/user_data.sh", {
     db_password = random_password.db_root_pass.result,
-    k3s_token   = random_password.k3s_token.result
+    k3s_token   = random_password.k3s_token.result,
+    asg_name    ="k3s-node-asg-${var.env}",
   })
   user_data_replace_on_change = true
 
