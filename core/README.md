@@ -59,6 +59,7 @@ Instala a distribuição K3s em modo Server.
 
 * **Traefik Ingress:** Mantém-se o Ingress Controller padrão ativado. Ele escuta nas portas `80` e `443` do Host, gerenciando automaticamente certificados SSL e roteamento de subdomínios.
 * **TLS SAN:** O certificado da API do cluster é gerado contemplando o IP Privado (VPC), o IP Público (EIP) e o `localhost`.
+* **Backup & Restore de Identidade**: O script implementa uma rotina de preservação de estado. Antes de iniciar, ele verifica a existência de backups de certificados (`tls`) e credenciais (`cred`) no volume persistente. Se encontrados, o cluster é restaurado com a mesma identidade criptográfica, permitindo que os Worker Nodes existentes reconectem automaticamente ao novo Core, sem necessidade de intervenção manual.
 
 ## Decisões de Arquitetura
 
