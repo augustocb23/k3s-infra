@@ -1,0 +1,30 @@
+#!/bin/bash
+exec > >(tee /var/log/user_data.log|logger -t user-data -s 2>/dev/console) 2>&1
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+
+# variables configuration
+DB_PASSWORD="${db_password}"
+K3S_TOKEN="${k3s_token}"
+ASG_NAME="${asg_name}"
+
+# log function
+LOG_FILE="/dev/null"
+log() {
+    echo "$(date "+%Y-%m-%d %H:%M:%S") [$${1^^}] $2" >> $LOG_FILE
+    echo "[$${1^^}] $2"
+}
+mkdir -p "/var/log/bootstrap"
+
+# execute installation steps
+TOTAL_STEPS=${ length(steps) }
+%{ for index, step in steps }
+LOG_FILE="/var/log/bootstrap/${ step.name }.log"
+echo "--- [${ index + 1 }/$TOTAL_STEPS] ${ step.description }: Starting... ---"
+echo
+
+${ file(step.path) }
+
+echo "--- [${ index + 1 }/$TOTAL_STEPS] ${ step.description }: DONE ---"
+echo
+%{ endfor ~}

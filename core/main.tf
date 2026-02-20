@@ -104,10 +104,15 @@ resource "aws_instance" "k3s_core" {
   iam_instance_profile = "LabInstanceProfile"
   key_name             = "vockey"
 
-  user_data = templatefile("${path.module}/user_data.sh", {
+  user_data = templatefile("${path.module}/bootstrap/0-main.tftpl", {
     db_password = random_password.db_root_pass.result,
     k3s_token   = random_password.k3s_token.result,
-    asg_name    ="k3s-node-asg-${var.env}",
+    asg_name    = "k3s-node-asg-${var.env}",
+    steps = [
+      for step in var.installation_steps : merge(step, {
+        path = "${path.module}/bootstrap/${step.index}-${step.name}.sh"
+      })
+    ],
   })
   user_data_replace_on_change = true
 

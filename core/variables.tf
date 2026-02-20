@@ -28,3 +28,44 @@ variable "database_storage_size" {
   description = "Storage size for database data"
   default     = 10
 }
+
+variable "installation_steps" {
+  type = list(object({
+    index       = number
+    name        = string
+    description = string
+  }))
+
+  default = [
+    {
+      index       = 1
+      name        = "nat"
+      description = "Configure NAT"
+    },
+    {
+      index       = 2
+      name        = "swap"
+      description = "Configure Swap"
+    },
+    {
+      index       = 3
+      name        = "data"
+      description = "Attach Data storage"
+    },
+    {
+      index       = 4
+      name        = "mysql"
+      description = "Install MySQL database"
+    },
+    {
+      index       = 5
+      name        = "k3s"
+      description = "Install K3s Server"
+    },
+    {
+      index       = 6
+      name        = "autoscaling"
+      description = "Configure Autoscaling"
+    }
+  ]
+}
